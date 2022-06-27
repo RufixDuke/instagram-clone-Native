@@ -8,8 +8,9 @@ const PostFooters = [
     {
         name: "Like",
         imageUrl: require("../../assets/heart.png"),
+        likedImageUrl: require("../../assets/icons8-heart-24.png"),
         // "https://img.icons8.com/material-outlined/24/undefined/like--v1.png",
-        likedImageUrl: "https://img.icons8.com/emoji/344/heart-suit.png",
+        // likedImageUrl: "https://img.icons8.com/emoji/344/heart-suit.png",
     },
     {
         name: "Comment",
@@ -130,7 +131,11 @@ const PostFooter = ({ handleLike, post }) => {
                 <View style={{ flexDirection: "row", width: "32%" }}>
                     <LikeIcon
                         imgStyle={[styles.footerIcon, styles.like]}
-                        imgUrl={PostFooters[0].imageUrl}
+                        imgUrl={post.likes_by_users.includes(
+                            firebase.auth().currentUser.email
+                                ? PostFooters[0].likedImageUrl
+                                : PostFooters[0].imageUrl
+                        )}
                         handleLike={handleLike}
                         post={post}
                     />
@@ -192,6 +197,18 @@ const PostFooter = ({ handleLike, post }) => {
     );
 };
 
+const LikeIcon = ({ imgStyle, imgUrl, handleLike, post }) => (
+    <TouchableOpacity onPress={() => handleLike(post)}>
+        <Image style={imgStyle} source={imgUrl} />
+    </TouchableOpacity>
+);
+
+const ShareIcon = ({ imgStyle, imgUrl }) => (
+    <TouchableOpacity>
+        <Image style={imgStyle} source={imgUrl} />
+    </TouchableOpacity>
+);
+
 const PostComments = ({ post }) => {
     return (
         <View>
@@ -218,18 +235,6 @@ const PostComments = ({ post }) => {
         </View>
     );
 };
-
-const LikeIcon = ({ imgStyle, imgUrl, handleLike, post }) => (
-    <TouchableOpacity onPress={() => handleLike(post)}>
-        <Image style={imgStyle} source={imgUrl} />
-    </TouchableOpacity>
-);
-
-const ShareIcon = ({ imgStyle, imgUrl }) => (
-    <TouchableOpacity>
-        <Image style={imgStyle} source={imgUrl} />
-    </TouchableOpacity>
-);
 
 const styles = StyleSheet.create({
     story: {

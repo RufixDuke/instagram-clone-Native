@@ -12,7 +12,7 @@ const Homescreen = ({ navigation }) => {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         db.collectionGroup("posts")
-            .orderBy("createdAt", "desc")
+            // .orderBy("createdAt", "desc")
             .onSnapshot((snapshop) => {
                 setPosts(
                     snapshop.docs.map((post) => ({
