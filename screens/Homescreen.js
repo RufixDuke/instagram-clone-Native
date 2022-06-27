@@ -11,9 +11,16 @@ import { db } from "../firebase";
 const Homescreen = ({ navigation }) => {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
-        db.collectionGroup("posts").onSnapshot((snapshop) => {
-            setPosts(snapshop.docs.map((doc) => doc.data()));
-        });
+        db.collectionGroup("posts")
+            .orderBy("createdAt", "desc")
+            .onSnapshot((snapshop) => {
+                setPosts(
+                    snapshop.docs.map((post) => ({
+                        id: post.id,
+                        ...post.data(),
+                    }))
+                );
+            });
     }, []);
     return (
         <SafeAreaView style={styles.container}>
